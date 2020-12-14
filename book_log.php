@@ -1,5 +1,7 @@
 <?php
 
+require __DIR__ . '/../vendor/autoload.php';
+
 function validate($review) {
     $errors = [];
 
@@ -42,7 +44,15 @@ function validate($review) {
 
 function dbconnect()
 {
-    $link = mysqli_connect('db', 'book_log', 'pass', 'book_log');
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+
+    $dbHost = $_ENV['DB_HOST'];
+    $dbUsername = $_ENV['DB_USERNAME'];
+    $dbPassword = $_ENV['DB_PASSWORD'];
+    $dbDatabase = $_ENV['DB_DATABASE'];
+
+    $link = mysqli_connect($dbHost, $dbUsername, $dbPassword, $dbDatabase);
 
     if (!$link) {
         echo 'データーベースに接続出来ませんでした。' . PHP_EOL;
